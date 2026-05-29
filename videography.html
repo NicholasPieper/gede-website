@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Videography — Go Everywhere. Do Everything.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #090909;
+      --dark:    #111111;
+      --mid:     #1c1c1c;
+      --border:  #2a2a2a;
+      --muted:   #666666;
+      --warm:    #f5f0e8;
+      --white:   #ffffff;
+      --gold:    #c4a96b;
+      --gold-lt: #d4bb87;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--warm);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 52px;
+      background: rgba(9,9,9,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.4s;
+    }
+    nav.scrolled { padding: 18px 52px; }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--warm); text-decoration: none; line-height: 1.2;
+    }
+    .nav-logo span { display: block; font-size: 0.55rem; font-weight: 400; letter-spacing: 0.35em; color: var(--gold); margin-top: 2px; }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--warm); text-decoration: none; opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-links a.active { opacity: 1; color: var(--gold); }
+
+    .nav-store {
+      font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--black); background: var(--gold); padding: 10px 22px;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .nav-store:hover { background: var(--gold-lt); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      position: relative;
+      height: 50vh;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background: url('photos/card-videography.jpg') center/cover no-repeat;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+    .page-hero:hover .page-hero-bg { transform: scale(1.0); }
+
+    .page-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(9,9,9,0.5) 0%, rgba(9,9,9,0.3) 40%, rgba(9,9,9,0.85) 100%);
+    }
+
+    .page-hero-content { position: relative; text-align: center; padding: 0 24px; }
+
+    .page-hero-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.45em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px; opacity: 0.9;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+
+    .page-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300; line-height: 0.95; color: var(--white);
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+    .page-hero-title em { font-style: italic; color: var(--gold-lt); }
+
+    .page-hero-sub {
+      margin-top: 20px; font-size: 0.7rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--warm); opacity: 0.55;
+      animation: fadeInUp 1s ease 0.6s both;
+    }
+
+    /* ── SIDE-BY-SIDE LAYOUT ── */
+    .video-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* Left column: Long Form */
+    .long-form-col {
+      border-right: 1px solid var(--border);
+      padding: 0;
+    }
+
+    /* Right column: Shorts */
+    .shorts-col {
+      background: var(--dark);
+      padding: 0;
+      position: relative;
+    }
+
+    /* Column headers */
+    .col-header {
+      text-align: center;
+      padding: 56px 28px 36px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .col-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .col-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .col-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 16px auto 0;
+      opacity: 0.4;
+    }
+
+    .col-desc {
+      margin-top: 12px;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--warm);
+      opacity: 0.45;
+      line-height: 1.7;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── FILM CARDS (left column) ── */
+    .films-list {
+      padding: 0;
+    }
+
+    .film-card {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .film-card:hover { background: var(--dark); }
+
+    .film-embed {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: var(--black);
+    }
+
+    .film-embed iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .film-info {
+      padding: 20px 32px 24px;
+    }
+
+    .film-num {
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .film-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .film-desc {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--warm);
+      opacity: 0.45;
+      line-height: 1.7;
+    }
+
+    /* View more films toggle */
+    .film-card.extra { display: none; }
+
+    .view-more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 22px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--warm);
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: color 0.3s, background 0.3s;
+    }
+    .view-more-btn:hover { color: var(--gold); background: var(--dark); }
+    .view-more-btn svg { transition: transform 0.3s; }
+    .view-more-btn.expanded svg { transform: rotate(180deg); }
+
+    /* ── SHORT CARDS (right column) ── */
+    .shorts-feed {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .short-card {
+      background: var(--black);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .short-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .short-card.extra-short { display: none; }
+
+    .short-embed {
+      position: relative;
+      width: 100%;
+      padding-top: 177.78%; /* 9:16 */
+      background: var(--mid);
+    }
+
+    .short-embed iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .view-more-shorts {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--warm);
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .view-more-shorts:hover { color: var(--gold); border-color: var(--gold); }
+    .view-more-shorts svg { transition: transform 0.3s; }
+    .view-more-shorts.expanded svg { transform: rotate(180deg); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 64px 52px 40px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; font-weight: 300; line-height: 1.1; color: var(--warm);
+    }
+    .footer-brand span {
+      display: block; font-size: 0.6rem; font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.35em; color: var(--gold); margin-top: 8px; font-weight: 400;
+    }
+
+    .footer-links { display: flex; gap: 64px; flex-wrap: wrap; }
+    .footer-col h4 {
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 12px; }
+    .footer-col ul a {
+      font-size: 0.72rem; letter-spacing: 0.08em; color: var(--warm);
+      opacity: 0.6; text-decoration: none; transition: opacity 0.2s, color 0.2s;
+    }
+    .footer-col ul a:hover { opacity: 1; color: var(--gold); }
+
+    .footer-social { display: flex; gap: 18px; margin-top: 4px; }
+    .footer-social a {
+      width: 38px; height: 38px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--warm); opacity: 0.5; text-decoration: none;
+      transition: opacity 0.2s, border-color 0.2s; font-size: 0.7rem;
+    }
+    .footer-social a:hover { opacity: 1; border-color: var(--gold); color: var(--gold); }
+
+    .footer-bottom {
+      padding-top: 28px; display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy {
+      font-size: 0.6rem; letter-spacing: 0.15em; color: var(--warm); opacity: 0.3;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 22px 28px; }
+      .nav-links { display: none; }
+
+      .video-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .long-form-col { border-right: none; }
+      .shorts-col { border-top: 1px solid var(--border); }
+
+      .shorts-feed {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .film-info { padding: 16px 20px 20px; }
+
+      footer { padding: 40px 28px 28px; }
+      .footer-top { flex-direction: column; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="index.html" class="nav-logo">
+      Go Everywhere<br>Do Everything
+      <span>Journeys to the Edge of the Map</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="photography.html">Photography</a></li>
+      <li><a href="videography.html" class="active">Videography</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="travel.html">Travel</a></li>
+      <li><a href="contact.html">Work With Us</a></li>
+    </ul>
+    <a href="store.html" class="nav-store">Shop</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <p class="page-hero-eyebrow">Cinematic Travel Films</p>
+      <h1 class="page-hero-title">Video<em>graphy</em></h1>
+      <p class="page-hero-sub">Stories told in motion — from the world's most extraordinary places</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- SIDE-BY-SIDE: Long Form (60%) | Shorts (40%) -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="video-layout">
+
+    <!-- LEFT: Long Form Films -->
+    <div class="long-form-col">
+      <div class="col-header">
+        <p class="col-label">01 — Films</p>
+        <h2 class="col-title">Long Form</h2>
+        <div class="col-divider"></div>
+        <p class="col-desc">Cinematic travel documentaries and vlogs — full stories from the road.</p>
+      </div>
+
+      <div class="films-list">
+        <div class="film-card">
+          <div class="film-embed">
+            <iframe src="https://www.youtube.com/embed/1a1SQ951wfw" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="film-info">
+            <p class="film-num">Latest Release</p>
+            <h3 class="film-title">Featured Film</h3>
+            <p class="film-desc">Update this title and description.</p>
+          </div>
+        </div>
+
+        <div class="film-card">
+          <div class="film-embed">
+            <iframe src="https://www.youtube.com/embed/SIHo3f-Mq5U" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="film-info">
+            <p class="film-num">Film 02</p>
+            <h3 class="film-title">Film Title</h3>
+            <p class="film-desc">Update with description.</p>
+          </div>
+        </div>
+
+        <div class="film-card">
+          <div class="film-embed">
+            <iframe src="https://www.youtube.com/embed/_Pfh3mDZYVk" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="film-info">
+            <p class="film-num">Film 03</p>
+            <h3 class="film-title">Film Title</h3>
+            <p class="film-desc">Update with description.</p>
+          </div>
+        </div>
+
+        <button class="view-more-btn" id="viewMoreBtn" onclick="toggleFilms()">
+          View All Films
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="film-card extra">
+          <div class="film-embed">
+            <iframe src="https://www.youtube.com/embed/VB2PXOi64G4" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="film-info">
+            <p class="film-num">Film 04</p>
+            <h3 class="film-title">Film Title</h3>
+            <p class="film-desc">Update with description.</p>
+          </div>
+        </div>
+
+        <div class="film-card extra">
+          <div class="film-embed">
+            <iframe src="https://www.youtube.com/embed/PR6luikNSjk" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="film-info">
+            <p class="film-num">Film 05</p>
+            <h3 class="film-title">Film Title</h3>
+            <p class="film-desc">Update with description.</p>
+          </div>
+        </div>
+
+        <div class="film-card extra">
+          <div class="film-embed">
+            <iframe src="https://www.youtube.com/embed/wUjesYXCq-k" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="film-info">
+            <p class="film-num">Film 06</p>
+            <h3 class="film-title">Film Title</h3>
+            <p class="film-desc">Update with description.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Shorts -->
+    <div class="shorts-col">
+      <div class="col-header">
+        <p class="col-label">02 — Shorts</p>
+        <h2 class="col-title">Quick Takes</h2>
+        <div class="col-divider"></div>
+        <p class="col-desc">Bite-sized travel moments — tips, hidden spots, and stories in under 60 seconds.</p>
+      </div>
+
+      <div class="shorts-feed" id="shortsFeed">
+        <div class="short-card"><div class="short-embed"><iframe src="https://www.youtube.com/embed/-K56l-6axLY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card"><div class="short-embed"><iframe src="https://www.youtube.com/embed/P7xN4vQ22Ms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card"><div class="short-embed"><iframe src="https://www.youtube.com/embed/N0X5CcseKS0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card"><div class="short-embed"><iframe src="https://www.youtube.com/embed/kMu63PbwLU0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card"><div class="short-embed"><iframe src="https://www.youtube.com/embed/eGIL-Mbne0U" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card"><div class="short-embed"><iframe src="https://www.youtube.com/embed/tym-ggm7cOc" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+
+        <button class="view-more-shorts" id="viewMoreShorts" onclick="toggleShorts()">
+          View More Shorts
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/7RE2lAJg_34" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/SRc60CReNOQ" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/xjB8FuNc444" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/CF3c581bZyg" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/SHxoBXyYkXE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/03vF0ow0LkA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/l_ogVXJpPAM" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/Ok79Fp2RTcI" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/kEZogctHzyo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/0pJM88iCR7s" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/_ENUws5ii6c" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/KkUMJ7vB4QU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/JEbhcDNOWFs" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/2BeTmA2TLj0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/96yp8A4MVrE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/O5KEERUYRBQ" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="short-card extra-short"><div class="short-embed"><iframe src="https://www.youtube.com/embed/wvQZ_4oNLng" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          Go Everywhere.<br>Do Everything.
+          <span>Stas &amp; Nick · @go_everywhere_do_everything</span>
+        </div>
+        <div class="footer-social" style="margin-top: 28px;">
+          <a href="https://youtube.com/@go_everywhere_do_everything" target="_blank" rel="noopener" title="YouTube">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.6 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+          </a>
+          <a href="https://instagram.com/goeverywhere_doeverything" target="_blank" rel="noopener" title="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="photography.html">Photography</a></li>
+            <li><a href="videography.html">Videography</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="travel.html">Travel Planning</a></li>
+            <li><a href="contact.html">Work With Us</a></li>
+            <li><a href="store.html">Shop</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2025 Go Everywhere Do Everything. All rights reserved.</p>
+      <p class="footer-copy">goeverywheredoeverything.club</p>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    function toggleShorts() {
+      const extras = document.querySelectorAll('.short-card.extra-short');
+      const btn = document.getElementById('viewMoreShorts');
+      const expanded = btn.classList.toggle('expanded');
+      extras.forEach(card => card.style.display = expanded ? 'block' : 'none');
+      btn.firstChild.textContent = expanded ? 'Show Less ' : 'View More Shorts ';
+    }
+
+    function toggleFilms() {
+      const extras = document.querySelectorAll('.film-card.extra');
+      const btn = document.getElementById('viewMoreBtn');
+      const expanded = btn.classList.toggle('expanded');
+      extras.forEach(card => card.style.display = expanded ? 'block' : 'none');
+      btn.firstChild.textContent = expanded ? 'Show Less ' : 'View All Films ';
+    }
+  </script>
+
+</body>
+</html>
