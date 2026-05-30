@@ -225,6 +225,153 @@
       line-height: 1.7;
     }
 
+    /* ── FEATURED WORKS ── */
+    .featured-works {
+      padding: 80px 52px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fw-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .fw-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .fw-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .fw-divider {
+      width: 50px;
+      height: 1px;
+      background: var(--gold);
+      margin: 18px auto 0;
+      opacity: 0.4;
+    }
+
+    /* Three-column row */
+    .fw-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+    }
+
+    .fw-col {
+      border: 1px solid var(--border);
+      background: var(--dark);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fw-section-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      opacity: 0.7;
+    }
+
+    /* Film embed */
+    .fw-film-embed {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: var(--black);
+    }
+
+    .fw-film-embed iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Shorts vertical stack */
+    .fw-shorts {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 500px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .fw-short {
+      background: var(--black);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .fw-short:hover { border-color: var(--gold); }
+
+    .fw-short-embed {
+      position: relative;
+      width: 100%;
+      padding-top: 177.78%;
+    }
+
+    .fw-short-embed iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Photos vertical stack */
+    .fw-photos {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .fw-photo {
+      flex: 1;
+      min-height: 140px;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .fw-photo:hover { border-color: var(--gold); }
+
+    .fw-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .fw-cta:hover { opacity: 1; }
+
+    @media (max-width: 900px) {
+      .featured-works { padding: 60px 28px; }
+      .fw-row { grid-template-columns: 1fr; gap: 24px; }
+    }
+
     /* ── SECTION GRID ── */
     .sections {
       display: grid;
@@ -512,6 +659,58 @@
     </p>
     <div class="intro-line"></div>
   </div>
+
+  <!-- FEATURED WORKS -->
+  <section class="featured-works">
+    <div class="fw-header">
+      <p class="fw-label">Featured Works</p>
+      <h2 class="fw-title">From the Road</h2>
+      <div class="fw-divider"></div>
+    </div>
+
+    <div class="fw-row">
+      <!-- Film -->
+      <div class="fw-col">
+        <p class="fw-section-label">Latest Film</p>
+        <div class="fw-film-embed">
+          <iframe src="https://www.youtube.com/embed/1a1SQ951wfw" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <a href="videography.html" class="fw-cta">
+          All Films
+          <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M1 3.5H13M10 1L13 3.5L10 6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Shorts -->
+      <div class="fw-col">
+        <p class="fw-section-label">Shorts</p>
+        <div class="fw-shorts">
+          <div class="fw-short"><div class="fw-short-embed"><iframe src="https://www.youtube.com/embed/O5KEERUYRBQ" allowfullscreen loading="lazy"></iframe></div></div>
+          <div class="fw-short"><div class="fw-short-embed"><iframe src="https://www.youtube.com/embed/0pJM88iCR7s" allowfullscreen loading="lazy"></iframe></div></div>
+          <div class="fw-short"><div class="fw-short-embed"><iframe src="https://www.youtube.com/embed/xjB8FuNc444" allowfullscreen loading="lazy"></iframe></div></div>
+        </div>
+        <a href="videography.html" class="fw-cta">
+          All Shorts
+          <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M1 3.5H13M10 1L13 3.5L10 6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Photography -->
+      <div class="fw-col">
+        <p class="fw-section-label">Photography</p>
+        <div class="fw-photos">
+          <div class="fw-photo" style="background-image: url('photos/card-photography.jpg')"></div>
+          <div class="fw-photo" style="background-image: url('photos/hero.jpg')"></div>
+          <div class="fw-photo" style="background-image: url('photos/card-travel.jpg')"></div>
+          <div class="fw-photo" style="background-image: url('photos/card-about.jpg')"></div>
+        </div>
+        <a href="photography.html" class="fw-cta">
+          All Photos
+          <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M1 3.5H13M10 1L13 3.5L10 6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- SECTION GRID -->
   <div class="sections">
